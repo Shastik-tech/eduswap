@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    body {
+        background: linear-gradient(135deg, #0f172a, #1e293b);
+    }
+
+    .wrapper {
+        min-height: 90vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .auth-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(15px);
+        border-radius: 16px;
+        padding: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        width: 100%;
+        max-width: 450px;
+        text-align: center;
+    }
+
+    .mb-4 {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* MUHIM */
+    }
+
+    label {
+        margin-bottom: 8px;
+        color: #cbd5e1;
+        text-align: center;
+    }
+
+    .form-control {
+        display: block;
+        width: 80%;
+        margin: 0 auto; /* MUHIM */
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(255,255,255,0.2);
+        background: rgba(255,255,255,0.08);
+        color: white;
+        text-align: center;
+    }
+
+    .form-control::placeholder {
+        text-align: center;
+    }
+
+    .form-control:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 8px rgba(59,130,246,0.5);
+    }
+
+    .info-text {
+        color: #94a3b8;
+        margin-bottom: 20px;
+    }
+
+    .btn-save {
+        background: #3b82f6;
+        border: none;
+        padding: 12px;
+        border-radius: 6px;
+        width: 200px;
+        margin: 20px auto 0;
+        display: block;
+        font-weight: bold;
+    }
+
+    .btn-save:hover {
+        background: #2563eb;
+    }
+</style>
+
+<div class="wrapper">
+    <div class="auth-card">
+
+        <h2 class="text-white mb-3">Profilingizni sozlang ⚙️</h2>
+        <p class="info-text">Ma'lumot kiriting</p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="mb-4">
+                <label>Siz nimalarni o'rgata olasiz?</label>
+                <input type="text" name="teaches"
+                       value="{{ user.profile.teaches }}"
+                       placeholder="Python, Figma"
+                       class="form-control" required>
+            </div>
+
+            <div class="mb-4">
+                <label>Siz nimalarni o'rganmoqchisiz?</label>
+                <input type="text" name="learns"
+                       value="{{ user.profile.learns }}"
+                       placeholder="Ingliz tili"
+                       class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn-save">
+                Saqlash
+            </button>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

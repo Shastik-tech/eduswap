@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    /* Karta kengligini biroz oshirdik va ichki joyni to'g'irladik */
+    .auth-card {
+        max-width: 420px;
+        margin: 40px auto;
+        border-radius: 24px;
+        padding: 30px 25px;
+        background: #1e293b;
+        border: 1px solid rgba(255,255,255,0.1);
+        text-align: center;
+    }
+
+    /* Taymer dizaynini ixchamlashtirdik */
+    .timer-box {
+        background: rgba(15, 23, 42, 0.4);
+        border-radius: 16px;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    .timer-label { font-size: 0.75rem; color: #94a3b8; letter-spacing: 1px; }
+    .timer-number { font-size: 1.8rem; font-weight: bold; color: #fbbf24; margin-top: -5px; }
+
+    /* OTP kvadratlarini bir qatorga sig'dirish */
+    .otp-container {
+        display: flex;
+        justify-content: center;
+        gap: 8px; /* Orasidagi masofani kamaytirdik */
+        margin-bottom: 25px;
+    }
+    .otp-input {
+        width: 45px; /* Kenglikni kamaytirdik */
+        height: 55px;
+        text-align: center;
+        font-size: 1.4rem;
+        font-weight: bold;
+        color: white;
+        background: #0f172a;
+        border: 2px solid #334155;
+        border-radius: 12px;
+        transition: 0.2s;
+    }
+    .otp-input:focus {
+        border-color: #3b82f6;
+        outline: none;
+        box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+    }
+
+    /* Tugma */
+    .btn-verify {
+        background: #2563eb;
+        color: white;
+        border: none;
+        padding: 14px;
+        width: 100%;
+        border-radius: 12px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+    .btn-verify:disabled { background: #475569; cursor: not-allowed; }
+</style>
+
+<div class="auth-card">
+    <h3 class="text-white fw-bold mb-1">Tasdiqlash</h3>
+    <p class="text-muted small mb-4">6 xonali kodni kiriting</p>
+    
+    <div class="timer-box">
+        <div class="timer-label">AMAL QILISH VAQTI</div>
+        <div class="timer-number" id="timer_display"><span id="timer_sec">60</span>s</div>
+    </div>
+    
+    <form method="POST" id="verify_form">
+        {% csrf_token %}
+        <input type="hidden" name="code" id="hidden_code">
+        <div class="otp-container">
+            <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+            <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+            <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+            <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+            <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+            <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+        </div>
+        <button type="submit" class="btn-verify" id="submit_btn">TASDIQLASH</button>
+    </form>
+</div>
+
+<script>
+    const inputs = document.querySelectorAll('.otp-input');
+    const hiddenInput = document.getElementById('hidden_code');
+    const submitBtn = document.getElementById('submit_btn');
+
+    inputs.forEach((input, index) => {
+        input.addEventListener('input', (e) => {
+            if (e.target.value && index < inputs.length - 1) inputs[index + 1].focus();
+            updateCode();
+        });
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Backspace' && !e.target.value && index > 0) inputs[index - 1].focus();
+        });
+    });
+
+    function updateCode() {
+        let code = "";
+        inputs.forEach(input => code += input.value);
+        hiddenInput.value = code;
+    }
+
+    let timeLeft = 60;
+    const countdown = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer_sec').innerText = timeLeft;
+        if (timeLeft <= 10) document.getElementById('timer_display').style.color = "#ef4444";
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            submitBtn.disabled = true;
+            submitBtn.innerText = "VAQT TUGADI";
+            inputs.forEach(i => i.disabled = true);
+        }
+    }, 1000);
+</script>
+{% endblock %}

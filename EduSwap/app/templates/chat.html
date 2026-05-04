@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    /* Chat konteyneri - Telegram foniga o'xshash */
+    .chat-container {
+        max-width: 700px;
+        width: 100%;
+        height: 80vh;
+        background: #0f172a; /* Dark fon */
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.1);
+        margin: 20px auto;
+    }
+
+    /* Chat header */
+    .chat-header {
+        background: #1e293b;
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .user-avatar {
+        width: 45px;
+        height: 45px;
+        background: #6366f1;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+        color: white;
+    }
+
+    /* Xabarlar oynasi */
+    .messages-box {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        background-image: url('https://githubusercontent.com'); /* Telegram foni */
+        background-blend-mode: overlay;
+        background-color: rgba(15, 23, 42, 0.9);
+    }
+
+    /* Xabarlar buluti (Bubbles) */
+    .msg {
+        max-width: 75%;
+        padding: 10px 15px;
+        margin-bottom: 10px;
+        border-radius: 15px;
+        position: relative;
+        font-size: 0.95rem;
+        line-height: 1.4;
+    }
+
+    .msg-me {
+        align-self: flex-end;
+        background: #6366f1; /* Telegram ko'ki */
+        color: white;
+        border-bottom-right-radius: 2px;
+    }
+
+    .msg-them {
+        align-self: flex-start;
+        background: #1e293b;
+        color: #f8fafc;
+        border-bottom-left-radius: 2px;
+    }
+
+    .msg-time {
+        font-size: 0.7rem;
+        opacity: 0.7;
+        margin-top: 5px;
+        display: block;
+        text-align: right;
+    }
+
+    /* Xabar yozish joyi */
+    .chat-input-area {
+        background: #1e293b;
+        padding: 15px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .chat-input-area input {
+        background: #0f172a !important;
+        border: 1px solid #334155 !important;
+        color: white !important;
+        border-radius: 25px;
+        padding: 10px 20px;
+        flex: 1;
+    }
+
+    .send-btn {
+        background: #6366f1;
+        color: white;
+        border: none;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.2s;
+    }
+
+    .send-btn:hover { transform: scale(1.1); background: #4f46e5; }
+</style>
+
+<div class="chat-container shadow-lg">
+    <!-- Header -->
+    <div class="chat-header">
+        <div class="user-avatar">{{ receiver.username|first|upper }}</div>
+        <div class="ms-3">
+            <h6 class="mb-0 fw-bold">@{{ receiver.username }}</h6>
+            <small class="text-success" style="font-size: 0.75rem;">online</small>
+        </div>
+    </div>
+
+    <!-- Messages -->
+    <div class="messages-box" id="msg-box">
+        {% for msg in messages %}
+            <div class="msg {% if msg.sender == user %}msg-me{% else %}msg-them{% endif %} shadow-sm">
+                {{ msg.text }}
+                <span class="msg-time">{{ msg.created_at|date:"H:i" }}</span>
+            </div>
+        {% empty %}
+            <div class="text-center my-auto text-muted small">
+                Suhbatni boshlash uchun xabar yozing...
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Input -->
+    <form method="POST" class="chat-input-area">
+        {% csrf_token %}
+        <input type="text" name="text" placeholder="Xabar yozing..." required autocomplete="off">
+        <button type="submit" class="send-btn">
+            <svg xmlns="http://w3.org" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
+            </svg>
+        </button>
+    </form>
+</div>
+
+<script>
+    // Chatni avtomatik pastga tushirish
+    var msgBox = document.getElementById("msg-box");
+    msgBox.scrollTop = msgBox.scrollHeight;
+</script>
+{% endblock %}

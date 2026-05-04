@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSwap 🎓</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'img/icon.png' %}">
+    
+    <!-- Bootstrapni qaytadan to'g'ri ulaymiz -->
+    <link href="https://jsdelivr.net" rel="stylesheet">
+
+    <style>
+        :root { --bg: #0f172a; --card: #1e293b; --primary: #6366f1; }
+        
+        body { 
+            background-color: var(--bg); 
+            color: white; 
+            font-family: 'Segoe UI', sans-serif; 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh;
+        }
+
+        /* NAVBARNI MAJBURIY TO'G'IRLASH */
+        .navbar-custom {
+            background: #1e293b;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            width: 100%;
+        }
+
+        .nav-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex; /* YONMA-YON QILISH */
+            justify-content: space-between; /* IKKI CHEKKAGA SURISH */
+            align-items: center; /* O'RTAGA TEKISLASH */
+        }
+
+        .nav-right {
+            display: flex; /* O'NG TOMONDAGILRNI YONMA-YON QILISH */
+            align-items: center;
+            gap: 25px; /* ORASINI OCHISH */
+        }
+
+        .nav-right a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            white-space: nowrap; /* IKKI QATORGA BO'LINMASIN */
+        }
+
+        .navbar-brand {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0;
+        }
+
+        .btn-logout {
+            border: 1px solid #ff4b5c;
+            color: #ff4b5c;
+            padding: 5px 15px;
+            border-radius: 20px;
+            background: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<header class="navbar-custom">
+    <div class="nav-wrapper">
+        <!-- CHAP TOMONDA LOGO -->
+        <a href="{% url 'home' %}" class="navbar-brand">EduSwap 🎓</a>
+
+        <!-- O'NG TOMONDA MENU -->
+        <div class="nav-right">
+            <a href="{% url 'search' %}">Sherik topish</a>
+
+            {% if user.is_authenticated %}
+                {% if user.is_staff %}
+                    <a href="/admin/" style="color: #fbbf24;">Admin 🛠️</a>
+                {% endif %}
+                <a href="{% url 'edit_profile' %}">Profilni sozlash</a>
+                <span style="color:#00d2ff; font-weight: bold;">@{{ user.username }}</span>
+                
+                <form action="{% url 'logout' %}" method="post" style="display:inline; margin:0;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-logout">Chiqish</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Kirish</a>
+                <a href="{% url 'signup' %}" style="background:var(--primary); padding:8px 20px; border-radius:15px;">Qo'shilish</a>
+            {% endif %}
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="container text-center">
+        {% block content %}
+        {% endblock %}
+    </div>
+</main>
+
+<footer style="padding: 20px 0; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); color: #64748b;">
+    <div class="container">
+        © 2026 EduSwap — Loyiha muallifi: Yuldashev Shohvahhob
+    </div>
+</footer>
+
+</body>
+</html>

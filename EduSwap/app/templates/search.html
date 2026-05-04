@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="width: 100%; max-width: 1200px; margin: 0 auto; padding: 20px; display: block !important;">
+    
+    <!-- Sarlavha -->
+    <div style="text-align: center; margin-bottom: 40px;">
+        <h2 style="color: white; font-weight: 800; margin-bottom: 10px;">Sherik topish 🔍</h2>
+        <p style="color: #94a3b8; font-size: 0.9rem;">O'rganish uchun munosib sherik qidiring</p>
+    </div>
+
+    <!-- Qidiruv paneli -->
+    <div style="max-width: 600px; margin: 0 auto 50px auto;">
+        <form method="GET" style="display: flex; gap: 10px; background: #1e293b; padding: 8px; border-radius: 15px; border: 1px solid #334155;">
+            <input type="text" name="q" placeholder="Nima o'rganmoqchisiz?" value="{{ q }}" 
+                   style="flex: 1; background: transparent; border: none; color: white; padding: 10px 15px; outline: none;">
+            <button type="submit" style="background: #6366f1; color: white; border: none; padding: 10px 25px; border-radius: 12px; font-weight: bold; cursor: pointer;">
+                Qidirish
+            </button>
+        </form>
+    </div>
+
+    <!-- Natijalar (Grid) -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px;">
+        {% for p in res %}
+        <div style="background: #1e293b; border-radius: 25px; padding: 25px; border: 1px solid rgba(255,255,255,0.05); text-align: left !important;">
+            
+            <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                <div style="width: 50px; height: 50px; background: #6366f1; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; font-size: 1.3rem;">
+                    {{ p.user.username|first|upper }}
+                </div>
+                <div style="margin-left: 15px;">
+                    <h6 style="color: white; margin: 0; font-weight: bold;">@{{ p.user.username }}</h6>
+                    <small style="color: #fbbf24;">★ {{ p.rating }}</small>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <small style="color: #94a3b8; display: block; margin-bottom: 5px;">O'rgatadi:</small>
+                <div style="color: #10b981; font-weight: 600;">{{ p.teaches|default:"To'ldirilmagan" }}</div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <small style="color: #94a3b8; display: block; margin-bottom: 5px;">O'rganadi:</small>
+                <div style="color: #818cf8; font-weight: 600;">{{ p.learns|default:"To'ldirilmagan" }}</div>
+            </div>
+
+            <a href="{% url 'chat' p.user.id %}" 
+   style="display: block; width: 100%; background: #6366f1; color: white; text-align: center; padding: 12px 0; border-radius: 15px; text-decoration: none; font-weight: bold; margin: 20px auto 0 auto;">
+    Suhbatni boshlash
+</a>
+
+        </div>
+        {% empty %}
+        <div style="grid-column: 1 / -1; text-align: center; padding: 50px; color: #64748b;">
+            <h5>Hozircha hech kim topilmadi 😕</h5>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

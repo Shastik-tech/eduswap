@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="width: 100%; min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 40px 0; background: #0f172a;">
+    <div class="container" style="max-width: 650px;"> <!-- Markazlashgan blok -->
+        
+        <!-- Sarlavha qismi -->
+        <div class="text-center mb-5">
+            <h1 style="font-size: 2.8rem; font-weight: 800; color: white; line-height: 1.2; margin-bottom: 20px;">
+                Bilimni <span style="color: #6366f1;">bepul</span> o'rganing!
+            </h1>
+            <p style="font-size: 1.1rem; color: #94a3b8; line-height: 1.6;">
+                Siz bilgan narsani o'rgating, bilmaganingizni o'rganing. <br>
+                O'zbekistondagi eng innovatsion ta'lim platformasi.
+            </p>
+        </div>
+
+        <!-- 3 ta xususiyat - Markazda va ixcham -->
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+            
+            <!-- Xavfsiz -->
+            <div style="background: #1e293b; padding: 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; transition: 0.3s;">
+                <div style="font-size: 2rem; margin-right: 25px;">🛡️</div>
+                <div style="text-align: left;">
+                    <h5 style="color: white; font-weight: 700; margin-bottom: 5px;">Xavfsiz</h5>
+                    <p style="color: #94a3b8; font-size: 0.9rem; margin: 0;">Email orqali kiber-tasdiqlash tizimi yordamida himoyalangan.</p>
+                </div>
+            </div>
+
+            <!-- Reyting -->
+            <div style="background: #1e293b; padding: 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; transition: 0.3s;">
+                <div style="font-size: 2rem; margin-right: 25px;">⭐</div>
+                <div style="text-align: left;">
+                    <h5 style="color: white; font-weight: 700; margin-bottom: 5px;">Reyting</h5>
+                    <p style="color: #94a3b8; font-size: 0.9rem; margin: 0;">Faqat eng yaxshi va ishonchli foydalanuvchilar bilan bilim almashing.</p>
+                </div>
+            </div>
+
+            <!-- Tezkor -->
+            <div style="background: #1e293b; padding: 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; transition: 0.3s;">
+                <div style="font-size: 2rem; margin-right: 25px;">⚡</div>
+                <div style="text-align: left;">
+                    <h5 style="color: white; font-weight: 700; margin-bottom: 5px;">Tezkor</h5>
+                    <p style="color: #94a3b8; font-size: 0.9rem; margin: 0;">Real-vaqtdagi muloqot va Telegram uslubidagi chat tizimi.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
