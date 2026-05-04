@@ -1,24 +1,34 @@
 import os
 from pathlib import Path
 
+# Loyiha yo'li
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Xavfsizlik kaliti (Ochiq qoldirishingiz mumkin, lekin loyihada maxfiy bo'lishi kerak)
 SECRET_KEY = 'django-insecure-zvty3(oo*6fwwl!9akskv%7j7x3j&^o2@-h*8r4_07p*(0cqxl'
-DEBUG = True
-ALLOWED_HOSTS = []
 
+# Render-da ishlashi uchun DEBUG False bo'lishi tavsiya etiladi
+DEBUG = True
+
+# RENDER VA LOCAL HOSTLAR
+ALLOWED_HOSTS = ['://onrender.com', 'localhost', '127.0.0.1', '.onrender.com']
+
+# ILOVALAR
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic', # CSS uchun qo'shildi
     'django.contrib.staticfiles',
-    'app', # Ilova ulandi
+    'app', 
 ]
 
+# MIDDLEWARE (WhiteNoise qo'shildi)
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # SHU QATOR MUHIM!
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -29,10 +39,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'config.urls'
 
+# TEMPLATES
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'app', 'templates')], # Sahifalar yo'li to'g'irlandi
+        'DIRS': [os.path.join(BASE_DIR, 'app', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -47,6 +58,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+# MA'LUMOTLAR BAZASI
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -54,25 +66,33 @@ DATABASES = {
     }
 }
 
-LANGUAGE_CODE = 'uz-uz' # O'zbek tiliga o'zgartirildi
+# TIL VA VAQT
+LANGUAGE_CODE = 'uz-uz'
 TIME_ZONE = 'Asia/Tashkent'
 USE_I18N = True
 USE_TZ = True
 
-# --- STATIC VA MEDIA ---
-STATIC_URL = 'static/'
+# --- STATIC VA MEDIA SOZLAMALARI ---
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Render uchun static fayllarni siqish va keshdan foydalanish
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # --- LOGIN/LOGOUT ---
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = 'login'
 
-# --- HAQIQIY GMAIL SMTP (100% ISHLAYDIGAN VARIANT) ---
+# --- GMAIL SMTP SOZLAMALARI ---
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com' # XATOLIK SHU YERDA EDI, TO'G'IRLANDI
+EMAIL_HOST = '://gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'shastik595@gmail.com'
-EMAIL_HOST_PASSWORD = 'brjldehchcoketxn' # Probellarsiz yozildi
+EMAIL_HOST_PASSWORD = 'brjldehchcoketxn' 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# Avtomatik ID turi
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
